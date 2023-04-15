@@ -45,12 +45,15 @@ input.active {
 input {
   min-width: 0;
 }
-
+input:not(.active) ~ input:not(.active) {
+  display: initial;
+  visibility: hidden;
+}
 button.active {
   color: red;
 }
 
-.fill {
+section>div>div {
   font-size: xx-small;
   font-family: monospace;
   text-align: center;
@@ -58,12 +61,12 @@ button.active {
   scroll-margin-top: 12px;
 }
 
-.fill.expanded {
+section>div.size1 {
   grid-column-start: 1;
   grid-column-end: calc(var(--columns) + 1);
 }
 
-.fill.full {
+section>div.size2 {
   z-index:1;
   overflow: scroll;
   position: fixed;
@@ -75,22 +78,24 @@ button.active {
   background-color: gray;
 }
 
-.fill.full::-webkit-scrollbar {
+section>div.size2::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
 
-.fill.full>img {
-  margin: 0;
+section>div.size2>img {
+  margin: 150px;
   max-width: none;
   max-height: none;
+  scale: 1;
+  transition: scale .4s, translate .1s;
 }
 
-.fill.full>div {
+section>div.size2>div {
   display: none;
 }
 
-.expanded img {
+.size1 img {
   max-width: auto;
   max-height: calc(100vh - 4em);
 }

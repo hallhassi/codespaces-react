@@ -1,13 +1,10 @@
 import React from 'react';
 import { useEffect } from 'react';
 import data from './data.js';
-const base400 = 'https://larmee.mo.cloudinary.net/400/'
-const base800 = 'https://larmee.mo.cloudinary.net/800/'
-const baseO = 'https://res.cloudinary.com/hallhassi/image/upload/kevin/'
+import Images from './Images.js'
 
 const buttons = []
 const ranges = []
-const images = []
 const imageSections = []
 const bioSection = []
 const infoSection = []
@@ -46,28 +43,6 @@ function Range({ classNames }) {
       onChange={changeRange} />
   )
 }
-function Images({ items, classNames }) {
-  return (
-    <section className={classNames} >
-      {
-        Object.entries(items).map((item, i) => {
-          item = item[1]
-          return (
-            <div className="fill" key={i} onClick={handleClick}>
-              <img
-                src={base400 + item.url}
-                data-lo={base400 + item.url}
-                data-hi={base800 + item.url}
-                data-o={baseO + item.url}
-              />
-              <div>{i + 1}</div>
-            </div>
-          )
-        })
-      }
-    </section >
-  )
-}
 function Bio({ items, classNames }) {
   return (
     <section className={classNames} >
@@ -79,26 +54,26 @@ function Bio({ items, classNames }) {
               <h2>{item.h2}</h2>
               <ul>
                 {
-                  item.lis.map(li =>
+                  item.lis.map((li, i2) =>
                   (
-                    <li>
+                    <li key={i2}>
                       {
-                        Object.values(li).map(value =>
+                        Object.values(li).map((value, i3) =>
                         (
-                          <span>
+                          <span key={i3}>
                             {value}
                           </span>
-                        ))
+                        )
+                        )
                       }
                     </li>
                   )
-
-                  )}
+                  )
+                }
               </ul>
             </div>
           )
-        }
-        )
+        })
       }
     </section >
   )
@@ -148,15 +123,6 @@ Object.entries(data).map(([title, items], index) => {
     )
   }
   if (index < 2) {
-
-    Object.entries(items).map((item, i) => {
-      let array = []
-      array.push(
-        item[0].url
-      )
-      let object = [[title, array]]
-      images.push(object)
-    })
     imageSections.push(
       <Images key={index} items={items} classNames={classNames} />
     )
@@ -182,39 +148,10 @@ function changeIndex(e) {
 function changeRange(e) {
   let name = e.target.classList[0]
   let numberOfColumns = Math.round((100 - e.target.value) / 10)
-  document.querySelectorAll('.expanded').forEach(x => {
-    x.querySelector('img').src = x.querySelector('img').dataset.lo
-    x.classList.remove('expanded')
+  document.querySelectorAll('.size1').forEach(x => {
+    x.classList.remove('size1')
   })
   document.querySelector('style').innerHTML += `\n section.${name}{--columns: ${numberOfColumns}}`
-  if (numberOfColumns === 10) {
-    console.log(images)
-  }
-}
-
-
-function handleClick(e) {
-  if (e.currentTarget.classList.contains("expanded")) {
-    e.currentTarget.classList.remove("expanded")
-    if (e.target.tagName === "IMG") {
-      e.currentTarget.classList.add("full")
-      e.currentTarget.querySelector('img').src = e.currentTarget.querySelector('img').dataset.o
-    }
-  }
-  else if (e.currentTarget.classList.contains("full")) {
-    e.currentTarget.classList.remove("full")
-    e.currentTarget.classList.add("expanded")
-    e.currentTarget.querySelector('img').src = e.currentTarget.querySelector('img').dataset.lo
-    console.log('a');
-  }
-  else {
-    e.currentTarget.parentElement.querySelectorAll('.expanded').forEach((x) => {
-      x.classList.remove("expanded")
-      x.querySelector('img').src = x.querySelector('img').dataset.lo
-    })
-    e.currentTarget.classList.add("expanded")
-    console.log(e.currentTarget);
-    e.currentTarget.querySelector('img').src = e.currentTarget.querySelector('img').dataset.hi
-    e.currentTarget.scrollIntoView()
+  if (numberOfColumns === 1) {
   }
 }
