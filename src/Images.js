@@ -45,11 +45,12 @@ function Div({ image, index }) {
         if (state === 0) {
             if (window.innerWidth === parseInt(getComputedStyle(img).width)) setState(2)
             else {
-                setState(state + 1)
+                console.log(div.getBoundingClientRect().top, displacedHeight);
                 window.scrollBy(0, div.getBoundingClientRect().top + displacedHeight)
+                setState(1)
             }
         }
-        if (state === 1) setState(state + 1)
+        if (state === 1) setState(2)
     }
     function handleScale(e) {
         e.preventDefault();
